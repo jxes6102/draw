@@ -26,6 +26,10 @@
     @apply bg-[#003366] hover:bg-[#303960] text-white font-bold py-1 px-2 rounded
 }
 
+.tag-style-1{
+    @apply text-base inline-flex items-center font-bold uppercase mx-1 px-3 py-1 bg-[#6C5B7B] text-white rounded-full
+}
+
 
 /* .hover-style-2 {
     @apply transition-all hover:text-[#F0E68C] hover:scale-100 hover:shadow-none

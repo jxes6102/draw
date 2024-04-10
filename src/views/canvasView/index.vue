@@ -162,8 +162,8 @@ const changeMode = (val) => {
 provide('changeMode', changeMode)
 //從背景選單新增圖片
 const onFileChangedBackground = async(event) => {
-    if(checkFileType(event.target.files[0].type)){
-        errorMessage.value = '請上傳正確圖片格式'
+    if(checkFile(event.target.files[0].type,event.target.files[0].size)){
+        errorMessage.value = '請上傳圖片檔且大小不超過3MB'
         dialogStatus.value = true
         return false
     }
@@ -177,8 +177,8 @@ const delBackgroundFile = (val) => {
 provide('delBackgroundFile', delBackgroundFile)
 //從圖片選單新增圖片
 const onFileChangedPicture = async(event) => {
-    if(checkFileType(event.target.files[0].type)){
-        errorMessage.value = '請上傳正確圖片格式'
+    if(checkFile(event.target.files[0].type,event.target.files[0].size)){
+        errorMessage.value = '請上傳圖片檔且大小不超過3MB'
         dialogStatus.value = true
         return false
     }
@@ -186,12 +186,15 @@ const onFileChangedPicture = async(event) => {
 }
 provide('onFileChangedPicture', onFileChangedPicture)
 //檢查檔案
-const checkFileType = (type) => {
+const checkFile = (type,size) => {
     let checkArr = ['png','jpeg','jpg']
     for(let item of checkArr){
         if(type.includes(item)){
             return false
         }
+    }
+    if(size > 3000000){
+        return false
     }
     return true
 }
