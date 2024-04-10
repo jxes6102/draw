@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mine-flex-center {
+    @apply flex justify-center items-center
+}
+
+.mine-fixed-center {
+    @apply fixed top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2
+}
+
+.hover-style-1 {
+    @apply transition-all hover:scale-105 hover:bg-[#3B3B3B]
+}
+
+.button-style-1 {
+    @apply bg-[#8A2BE2] hover:bg-[#A933FF] text-white font-bold py-2 px-4 rounded
+}
+
+.button-style-2 {
+    @apply bg-[#336699] hover:bg-[#6699CC] text-white font-bold py-0.5 px-1 rounded
+}
+
+.button-style-3 {
+    @apply bg-[#003366] hover:bg-[#303960] text-white font-bold py-1 px-2 rounded
+}
+
+
+/* .hover-style-2 {
+    @apply transition-all hover:text-[#F0E68C] hover:scale-100 hover:shadow-none
+}
+
+.hover-style-3 {
+    @apply transition-all hover:opacity-70
+}
+
+.border-style{
+    @apply border-[1px] border-gray-200 border-solid
+}
+
+.shadow-style-1 {
+    @apply shadow-[0_0_5px_5px_rgba(0,0,0,0.04)]
+}
+
+.shadow-style-2 {
+    @apply shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)]
+} */
