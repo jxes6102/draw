@@ -47,6 +47,7 @@
                                 class="w-[10vw] h-[10vw] max-w-[150px] max-h-[150px]">
                                 <img class="w-full h-full" :src="item" alt="">
                             </div>
+                            <button class="button-style-2 w-full mt-1 text-[#E5EAF3]" @click="addPicture(index)">加入</button>
                             <button class="button-style-2 w-full mt-1 text-[#E5EAF3]" @click="delFile(index)">刪除</button>
                         </div>
                     </div>
@@ -66,7 +67,7 @@
                 <div class="w-full h-auto py-3 flex flex-col justify-start items-start overflow-y-auto overflow-x-hidden gap-[10px]">
                     <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
                         <div class="tag-style-1">類型</div>
-                        <div class="w-[70%]">
+                        <div class="grow">
                             <el-select
                                 v-model="graphForm.type"
                                 class="m-2"
@@ -85,25 +86,24 @@
                     <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
                         <template v-if="(graphForm.type == 'Ellipse') || (graphForm.type == 'Rect') || (graphForm.type == 'Triangle')">
                             <div class="tag-style-1">大小</div>
-                            <div class="grow w-[70%] flex flex-wrap justify-start items-center">
+                            <div class="grow w-[70%] flex flex-wrap justify-start items-center gap-1">
                                 <div class="w-full flex flex-wrap justify-start items-center">
-                                    <div class="w-[10%] text-white">長</div>
-                                    <div class="w-[90%]">
+                                    <div class="w-auto tag-style-2">長</div>
+                                    <div class="grow px-2">
                                         <el-slider :min="30" :max="200" v-model="graphForm.height" />
                                     </div>
                                 </div>
                                 <div class="w-full flex flex-wrap justify-start items-center">
-                                    <div class="w-[10%] text-white">寬</div>
-                                    <div class="w-[90%]">
+                                    <div class="w-auto tag-style-2">寬</div>
+                                    <div class="grow px-2">
                                         <el-slider :min="30" :max="200" v-model="graphForm.width" />
                                     </div>
                                 </div>
-
                             </div>
                         </template>
                         <template v-else>
                             <div class="tag-style-1">大小</div>
-                            <div class="grow w-[70%]">
+                            <div class="grow px-2">
                                 <el-slider :min="(graphForm.type == 'Line') ? 2 : 30" :max="(graphForm.type == 'Line') ? 10 : 200" v-model="graphForm.size" />
                             </div>
                         </template>
@@ -111,9 +111,10 @@
                     </div>
                     <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
                         <div class="tag-style-1">顏色</div>
-                        <el-color-picker @active-change="changeGraphColor" v-model="graphForm.color" />
+                        <div class="grow px-2">
+                            <el-color-picker @active-change="changeGraphColor" v-model="graphForm.color" />
+                        </div>
                     </div>
-                    
                     <div class="w-full h-auto flex flex-wrap justify-start items-center">
                         <button @click="addGraph(graphForm)" class="button-style-2 w-full mt-1 text-[#E5EAF3]">送出</button>
                     </div>
@@ -134,21 +135,25 @@
                 <div class="w-full h-auto py-3 flex flex-col justify-start items-start overflow-y-auto overflow-x-hidden gap-[10px]">
                     <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
                         <div class="tag-style-1">內容</div>
-                        <input class="w-[70%] px-1" type="text" v-model="textForm.text">
+                        <div class="w-[70%] px-2">
+                            <input class="px-1" type="text" v-model="textForm.text">
+                        </div>
                     </div>
                     <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
                         <div class="tag-style-1">大小</div>
-                        <div class="w-[70%]">
+                        <div class="grow px-2">
                             <el-slider :min="50" :max="300"  v-model="textForm.size" />
                         </div>
                     </div>
                     <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
                         <div class="tag-style-1">顏色</div>
-                        <el-color-picker @active-change="changeColor" v-model="textForm.color" />
+                        <div class="grow px-2">
+                            <el-color-picker @active-change="changeColor" v-model="textForm.color" />
+                        </div>
                     </div>
                     <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
                         <div class="tag-style-1">字型</div>
-                        <div class="w-[70%]">
+                        <div class="grow">
                             <el-select
                                 v-model="textForm.fontFamily"
                                 class="m-2"
@@ -322,6 +327,7 @@ const exportPNG = inject('exportPNG')
 const exportPDF = inject('exportPDF')
 const delBackgroundFile = inject('delBackgroundFile')
 const addGraph = inject('addGraph')
+const addPicture = inject('addPicture')
 //文字顏色改變
 const changeColor = (val) => {
     if(!val){
@@ -341,6 +347,10 @@ const changeGraphOptions = (val) => {
     }else {
         graphForm.value.size = 50
     }
+
+    graphForm.value.width = 50
+    graphForm.value.height = 50
+    graphForm.value.color = '#000000'
 }
 //上傳背景
 const backgroundInputEle = ref(null)

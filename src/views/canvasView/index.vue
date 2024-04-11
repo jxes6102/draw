@@ -40,7 +40,6 @@ import img_6 from '@/assets/img/laugh-6.png'
 import img_7 from '@/assets/img/laugh-7.png'
 import img_8 from '@/assets/img/laugh-8.png'
 import img_9 from '@/assets/img/laugh-9.png'
-import img_10 from '@/assets/img/example-2.png'
 /*
 mode 1背景 2圖片 3文字 4匯出
 sizeObj 尺寸細項
@@ -210,6 +209,37 @@ const delFile = (val) => {
     filePictureList.value.splice(val,1)
 }
 provide('delFile', delFile)
+//從圖片選單新增圖片
+const addPicture = (index) => {
+    choseImg(index)
+
+    fabric.Image.fromURL(choseFile, (myImg) => {
+        let countHeight = 0
+        let countWidth = 0
+
+        if(myImg.height>myImg.width){
+            countHeight = 200
+            countWidth = parseInt((countHeight*(myImg.width/myImg.height)).toFixed())
+        }else{
+            countWidth = 200
+            countHeight = parseInt((countWidth*(myImg.height/myImg.width)).toFixed())
+        }
+
+        const img = myImg.set({
+            left: (sizeObj.imgWidth - countWidth) / 2,
+            top: (sizeObj.imgHeight - countHeight) / 2,
+            cornerStrokeColor: "#8A2BE2",
+            borderColor:"#8A2BE2",
+            // width:150,
+            // height:150
+        });
+        
+        img.scaleToHeight(countHeight)
+
+        canvas.add(img).renderAll(); 
+    });
+}
+provide('addPicture', addPicture)
 //從圖片選單選擇圖片
 const choseImg = (index) => {
     choseFile = filePictureList.value[index]
@@ -217,7 +247,7 @@ const choseImg = (index) => {
 provide('choseImg', choseImg)
 //拖曳事件處理
 const dropImg = (e) => {
-    if(mode.value !== 2){
+    if((mode.value !== 2) || (isMobile.value)){
         return false
     }
 
@@ -239,8 +269,8 @@ const dropImg = (e) => {
         }
 
         const img = myImg.set({
-            left: dropPosition.left,
-            top: dropPosition.height,
+            left: dropPosition.left - countWidth / 2,
+            top: dropPosition.height - countHeight / 2,
             cornerStrokeColor: "#8A2BE2",
             borderColor:"#8A2BE2",
             // width:150,
@@ -271,6 +301,9 @@ const delSelectObj = () => {
 provide('delSelectObj',delSelectObj)
 //新增文字
 const addText = (textObj) => {
+    if(!textObj.text){
+        return false
+    }
     const text = new fabric.Text(textObj.text, {
         left: sizeObj.imgWidth/2,
         top: sizeObj.imgHeight/2,
@@ -407,12 +440,13 @@ const cancel = () => {
 //新增圖形
 const addGraph = (obj) => {
     let graphItem = null
+
     if(obj.type == "Circle"){
         graphItem = new fabric.Circle({
             radius: obj.size,
             fill: obj.color,
-            left: sizeObj.imgWidth/2,
-            top: sizeObj.imgHeight/2,
+            left: sizeObj.imgWidth/2 - obj.size,
+            top: sizeObj.imgHeight/2 - obj.size,
             cornerStrokeColor: "#8A2BE2",
             borderColor:"#8A2BE2",
         })
@@ -421,8 +455,8 @@ const addGraph = (obj) => {
         graphItem = new fabric.Ellipse({
             rx: obj.width, // 必有欄位
             ry: obj.height, // 必有欄位
-            left: sizeObj.imgWidth/2,
-            top: sizeObj.imgHeight/2,
+            left: sizeObj.imgWidth/2 - obj.width,
+            top: sizeObj.imgHeight/2 - obj.height,
             fill: obj.color,
             cornerStrokeColor: "#8A2BE2",
             borderColor:"#8A2BE2",
@@ -435,7 +469,7 @@ const addGraph = (obj) => {
             ], {
             stroke: obj.color,
             strokeWidth: obj.size, // 必有欄位
-            left: sizeObj.imgWidth/2,
+            left: sizeObj.imgWidth/2 - 100,
             top: sizeObj.imgHeight/2,
             cornerStrokeColor: "#8A2BE2",
             borderColor:"#8A2BE2",
@@ -444,8 +478,8 @@ const addGraph = (obj) => {
         graphItem = new fabric.Rect({
             width: obj.width, // 必有欄位
             height: obj.height, // 必有欄位
-            left: sizeObj.imgWidth/2,
-            top: sizeObj.imgHeight/2,
+            left: (sizeObj.imgWidth - obj.width) / 2,
+            top: (sizeObj.imgHeight - obj.height) / 2,
             fill: obj.color,
             cornerStrokeColor: "#8A2BE2",
             borderColor:"#8A2BE2",
@@ -454,8 +488,8 @@ const addGraph = (obj) => {
         graphItem = new fabric.Triangle({
             width: obj.width, // 必有欄位
             height: obj.height, // 必有欄位
-            left: sizeObj.imgWidth/2,
-            top: sizeObj.imgHeight/2,
+            left: (sizeObj.imgWidth - obj.width) / 2,
+            top: (sizeObj.imgHeight - obj.height) / 2,
             fill: obj.color,
             cornerStrokeColor: "#8A2BE2",
             borderColor:"#8A2BE2",
