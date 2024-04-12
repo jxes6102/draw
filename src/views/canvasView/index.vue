@@ -1,12 +1,18 @@
 <template>
-    <div v-if="!isMobile" class="w-[100vw] h-[100vh] flex flex-wrap justify-center items-center">
+    <!-- <div v-if="!isMobile" class="w-[100vw] h-[100vh] flex flex-wrap justify-center items-center">
         <canvasMenu />
         <div ref="canvasDiv" id="canvasDiv" class="grow w-[65%] h-[100%] bg-[rgb(220,220,220,0.5)] flex flex-wrap justify-center items-center">
             <canvas id="canvas"></canvas>
         </div>
     </div>
-    <div class="w-full h-full flex flex-wrap justify-center items-center text-2xl font-bold" v-else>
+    <div v-else class="w-full h-full flex flex-wrap justify-center items-center text-2xl font-bold" >
         不能用手機
+    </div> -->
+    <div class="w-[100vw] h-[100vh] flex flex-wrap justify-center items-center">
+        <canvasMenu />
+        <div ref="canvasDiv" id="canvasDiv" class="grow w-[65%] h-[100%] bg-[rgb(220,220,220,0.5)] flex flex-wrap justify-center items-center">
+            <canvas id="canvas"></canvas>
+        </div>
     </div>
     <Teleport to="body">
         <dialogView v-if="dialogStatus" @close="cancel" type="auto">
@@ -40,6 +46,7 @@ import img_6 from '@/assets/img/laugh-6.png'
 import img_7 from '@/assets/img/laugh-7.png'
 import img_8 from '@/assets/img/laugh-8.png'
 import img_9 from '@/assets/img/laugh-9.png'
+import 'animate.css';
 /*
 mode 1背景 2圖片 3文字 4匯出
 sizeObj 尺寸細項
@@ -78,9 +85,7 @@ let choseFile = ''
 const dialogStatus = ref(false)
 const errorMessage = ref('')
 watch(isMobile, (newVal, oldVal) => {
-    if(!newVal){
-        setBackground()
-    }
+    setBackground()
 })
 //設定圖片尺寸
 const getImgSize = (index) => {
@@ -89,16 +94,35 @@ const getImgSize = (index) => {
         let countWidth = 0
         let image = new Image()
         let chose = backgronndImgUrl.value[index || 0]
-        image.src = chose;
+        image.src = chose
 
         image.onload = () => {
 
             if(image.height>image.width){
-                countHeight = 600
+                if(isMobile.value){
+                    countHeight = 350
+                }else{
+                    countHeight = 600
+                }
                 countWidth = parseInt((countHeight*(image.width/image.height)).toFixed())
+
+                if(isMobile.value && countWidth>280){
+                    countHeight = 250
+                    countWidth = parseInt((countHeight*(image.width/image.height)).toFixed())
+                }
+
             }else{
-                countWidth = 600
+                if(isMobile.value){
+                    countWidth = 280
+                }else{
+                    countWidth = 600
+                }
                 countHeight = parseInt((countWidth*(image.height/image.width)).toFixed())
+
+                if(isMobile.value && countHeight>350){
+                    countWidth = 200
+                    countHeight = parseInt((countWidth*(image.height/image.width)).toFixed())
+                }
             }
 
             resolve({width:countWidth,height:countHeight})
@@ -155,10 +179,21 @@ const setBackground = async(index) => {
 }
 provide('setBackground', setBackground)
 //切換模式
+const modeDialogStatus = ref(false)
 const changeMode = (val) => {
+    if(isMobile.value){
+        modeDialogStatus.value = true
+    }
     mode.value = val+1
 }
 provide('changeMode', changeMode)
+provide('modeDialogStatus', modeDialogStatus)
+//關閉手機模式視窗
+const closeModeDialog = () => {
+    modeDialogStatus.value = false
+    console.log('closeModeDialog')
+}
+provide('closeModeDialog', closeModeDialog)
 //從背景選單新增圖片
 const onFileChangedBackground = async(event) => {
     if(checkFile(event.target.files[0].type,event.target.files[0].size)){
@@ -504,7 +539,9 @@ const addGraph = (obj) => {
 provide('addGraph',addGraph)
 
 onMounted(() => {
-
+    if(isMobile.value){
+        mode.value = -1
+    }
     // // 變更所有物件畫出的控制項
     // fabric.Object.prototype.drawControls = function (ctx, styleOverride) {
     //     // 複寫他，改成什麼都不畫
