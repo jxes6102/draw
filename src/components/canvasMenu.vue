@@ -17,30 +17,17 @@
                     class="transition-all fixed w-full h-full left-0 top-0 bg-slate-800 opacity-50 flex flex-wrap justify-center items-center"
                 >
                 </div>
-                <div
-                    @click.self="closeModeDialog"
+                <div @click.self="closeModeDialog"
                     class="absolute left-0 top-0 w-[100vw] h-[100vh] flex flex-wrap justify-center items-center" >
-                    <div 
-                        class="animate__animated animate__bounceIn relative w-[75vw] h-[60vh] rounded-lg bg-[#3B3B3B] flex flex-col justify-start items-center overflow-y-auto overflow-x-hidden"
-                    >
-                        <!-- <div class="w-[100px] h-[100px] bg-red-300">zxc</div>
-                        <div class="w-[100px] h-[100px] bg-red-300">zxc</div>
-                        <div class="w-[100px] h-[100px] bg-red-300">zxc</div>
-                        <div class="w-[100px] h-[100px] bg-red-300">zxc</div>
-                        <div class="w-[100px] h-[100px] bg-red-300">zxc</div>
-                        <div class="w-[100px] h-[100px] bg-red-300">zxc</div>
-                        <div class="w-[100px] h-[100px] bg-red-300">zxc</div>
-                        <div class="w-[100px] h-[100px] bg-red-300">zxc</div>
-                        <div class="w-[100px] h-[100px] bg-red-300">zxc</div>
-                        <div class="w-[100px] h-[100px] bg-red-300">zxc</div> -->
-                        <div class="w-full text-2xl text-[#E5EAF3] flex flex-wrap justify-center items-center">{{modeData[mode-1].font}}</div>
+                    <div class="animate__animated animate__bounceIn relative w-[75vw] h-[60vh] rounded-lg bg-[#3B3B3B] flex flex-col justify-start items-center ">
+                        <div class="w-full text-2xl text-[#E5EAF3] flex flex-wrap justify-center items-center">{{modeData[mode-1]?.font}}</div>
                         <template v-if="mode == 1">
-                            <div class="relative w-full h-auto flex flex-wrap justify-start items-center overflow-y-auto overflow-x-hidden gap-[10px]">
+                            <div class="relative w-full h-auto flex flex-wrap justify-start items-center overflow-y-auto overflow-x-hidden gap-2">
                                 <input ref="backgroundInputEle" v-show="false" class="w-full" @change="onFileChangedBackground($event)" type="file" id="myFile" name="filename">
                                 <div class="sticky w-full top-0 bg-[#3B3B3B] mine-flex-center ">
                                     <button @click="uploadBackground" class="w-4/5 button-style-4">上傳背景圖片</button>
                                 </div>
-                                <div class="w-full h-[75%] grid grid-cols-2 auto-rows-auto justify-start items-center gap-2 overflow-y-auto overflow-x-hidden">
+                                <div class="w-full h-[75%] grid grid-cols-2 auto-rows-auto justify-start items-center gap-x-1 gap-y-2 overflow-y-auto overflow-x-hidden">
                                     <div
                                         v-for="(item, index) in backgronndImgUrl" :key="index"
                                         class="w-auto h-auto flex flex-col justify-center items-center ">
@@ -55,11 +42,174 @@
                                 
                             </div>
                         </template>
-                        <!-- <div
-                            @click="close" 
-                            class="absolute w-auto h-auto top-0 right-0 p-2 flex flex-wrap justify-center items-center cursor-pointer">
-                            <el-icon size="30" color="#ffffff"><Close /></el-icon>
-                        </div> -->
+                        <template v-if="mode == 2">
+                            <div class="relative w-full h-full flex flex-col justify-start items-center gap-2">
+                                <div class="w-full h-[50%] flex flex-wrap justify-center items-start overflow-y-auto overflow-x-hidden gap-2">
+                                    <input v-show="false" ref="pictureInputEle" class="w-full" @change="onFileChangedPicture($event)" type="file" id="myFile" name="filename">
+                                    <div class="sticky w-full top-0 bg-[#3B3B3B] mine-flex-center ">
+                                        <button @click="uploadPicture" class="w-4/5 button-style-1">上傳圖片素材</button>
+                                    </div>
+                                    
+                                    <div class="w-full grid grid-cols-2 auto-rows-auto justify-start items-center gap-x-1 gap-y-2 overflow-y-auto overflow-x-hidden">
+                                        <div
+                                            v-for="(item, index) in filePictureList" :key="index"
+                                            class="w-auto h-auto mt-1 flex flex-col justify-center items-center">
+                                            <div
+                                                class="w-[80px] h-[80px]">
+                                                <img class="w-full h-full" :src="item" alt="">
+                                            </div>
+                                            <button class="button-style-2 w-4/5 mt-1 text-[#E5EAF3]" @click="addPicture(index)">加入</button>
+                                            <button class="button-style-2 w-4/5 mt-1 text-[#E5EAF3]" @click="delFile(index)">刪除</button>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="w-full h-[30%] flex flex-col justify-start items-center overflow-y-auto overflow-x-hidden gap-1">
+                                    <button class="button-style-3 w-4/5" @click="cancelSelect">取消選取物件</button>
+                                    <button class="button-style-3 w-4/5" @click="delSelectObj">刪除已選物件</button>
+                                    <button class="button-style-3 w-4/5" @click="up">移到上一層</button>
+                                    <button class="button-style-3 w-4/5" @click="finalUp">移到最上層</button>
+                                    <button class="button-style-3 w-4/5" @click="down">移到後一層</button>
+                                    <button class="button-style-3 w-4/5" @click="finalDown">移到最底層</button>
+                                    <button class="button-style-3 w-4/5" @click="delAll">刪除全部</button>
+                                </div>
+                            </div>
+                            
+                        </template>
+
+                        <template v-if="mode == 3">
+                            <div class="relative w-full h-full flex flex-col justify-start items-center gap-2">
+                                <div class="w-full h-[50%] flex flex-wrap justify-center items-start overflow-y-auto overflow-x-hidden gap-2">
+                                    <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
+                                        <div class="tag-style-1">類型</div>
+                                        <div class="grow">
+                                            <el-select
+                                                v-model="graphForm.type"
+                                                class="m-2"
+                                                placeholder=""
+                                                @change="changeGraphOptions"
+                                            >
+                                                <el-option
+                                                    v-for="item in graphOptions"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value"
+                                                />
+                                            </el-select>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
+                                        <template v-if="(graphForm.type == 'Ellipse') || (graphForm.type == 'Rect') || (graphForm.type == 'Triangle')">
+                                            <div class="tag-style-1">大小</div>
+                                            <div class="grow w-[70%] flex flex-wrap justify-start items-center gap-1">
+                                                <div class="w-full flex flex-wrap justify-start items-center">
+                                                    <div class="w-auto tag-style-2">長</div>
+                                                    <div class="grow px-2">
+                                                        <el-slider :min="30" :max="200" v-model="graphForm.height" />
+                                                    </div>
+                                                </div>
+                                                <div class="w-full flex flex-wrap justify-start items-center">
+                                                    <div class="w-auto tag-style-2">寬</div>
+                                                    <div class="grow px-2">
+                                                        <el-slider :min="30" :max="200" v-model="graphForm.width" />
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </template>
+                                        <template v-else>
+                                            <div class="tag-style-1">大小</div>
+                                            <div class="grow px-2">
+                                                <el-slider :min="(graphForm.type == 'Line') ? 2 : 30" :max="(graphForm.type == 'Line') ? 10 : 200" v-model="graphForm.size" />
+                                            </div>
+                                        </template>
+                                        
+                                    </div>
+                                    <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
+                                        <div class="tag-style-1">顏色</div>
+                                        <div class="grow px-2">
+                                            <el-color-picker @active-change="changeGraphColor" v-model="graphForm.color" />
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-auto flex flex-wrap justify-center items-center">
+                                        <button @click="addGraph(graphForm)" class="button-style-2 w-4/5 mt-1 text-[#E5EAF3]">送出</button>
+                                    </div>
+                                </div>
+
+                                <div class="w-full h-[30%] flex flex-col justify-start items-center overflow-y-auto overflow-x-hidden gap-1">
+                                    <button class="button-style-3 w-4/5" @click="cancelSelect">取消選取物件</button>
+                                    <button class="button-style-3 w-4/5" @click="delSelectObj">刪除已選物件</button>
+                                    <button class="button-style-3 w-4/5" @click="up">移到上一層</button>
+                                    <button class="button-style-3 w-4/5" @click="finalUp">移到最上層</button>
+                                    <button class="button-style-3 w-4/5" @click="down">移到後一層</button>
+                                    <button class="button-style-3 w-4/5" @click="finalDown">移到最底層</button>
+                                    <button class="button-style-3 w-4/5" @click="delAll">刪除全部</button>
+                                </div>
+                            </div>
+                            
+                        </template>
+
+                        <template v-if="mode == 4">
+                            <div class="relative w-full h-full flex flex-col justify-start items-center gap-2">
+                                <div class="w-full h-[50%] flex flex-wrap justify-center items-start overflow-y-auto overflow-x-hidden gap-2">
+                                    <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
+                                        <div class="tag-style-1">內容</div>
+                                        <div class="w-[50%] px-2">
+                                            <input class="px-1" type="text" v-model="textForm.text">
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
+                                        <div class="tag-style-1">大小</div>
+                                        <div class="grow px-2">
+                                            <el-slider :min="50" :max="300"  v-model="textForm.size" />
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
+                                        <div class="tag-style-1">顏色</div>
+                                        <div class="grow px-2">
+                                            <el-color-picker @active-change="changeColor" v-model="textForm.color" />
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-auto px-2 flex flex-wrap justify-start items-center">
+                                        <div class="tag-style-1">字型</div>
+                                        <div class="grow">
+                                            <el-select
+                                                v-model="textForm.fontFamily"
+                                                class="m-2"
+                                                placeholder=""
+                                            >
+                                                <el-option
+                                                    v-for="item in fontFamilyOptions"
+                                                    :key="item.value"
+                                                    :label="item.label"
+                                                    :value="item.value"
+                                                />
+                                            </el-select>
+                                        </div>
+                                    </div>
+                                    <div class="w-full h-auto flex flex-wrap justify-center items-center">
+                                        <button @click="addText(textForm)" class="button-style-2 w-4/5 mt-1 text-[#E5EAF3]">送出</button>
+                                    </div>
+                                </div>
+
+                                <div class="w-full h-[30%] flex flex-col justify-start items-center overflow-y-auto overflow-x-hidden gap-1">
+                                    <button class="button-style-3 w-4/5" @click="cancelSelect">取消選取物件</button>
+                                    <button class="button-style-3 w-4/5" @click="delSelectObj">刪除已選物件</button>
+                                    <button class="button-style-3 w-4/5" @click="up">移到上一層</button>
+                                    <button class="button-style-3 w-4/5" @click="finalUp">移到最上層</button>
+                                    <button class="button-style-3 w-4/5" @click="down">移到後一層</button>
+                                    <button class="button-style-3 w-4/5" @click="finalDown">移到最底層</button>
+                                    <button class="button-style-3 w-4/5" @click="delAll">刪除全部</button>
+                                </div>
+                            </div>
+                            
+                        </template>
+                        <template v-if="mode == 5">
+                            <div class="w-full h-auto flex flex-col justify-start items-center gap-1">
+                                <button class="button-style-3 w-4/5" @click="exportJPG">匯出JPG</button>
+                                <button class="button-style-3 w-4/5" @click="exportPNG">匯出PNG</button>
+                                <button class="button-style-3 w-4/5" @click="exportPDF">匯出PDF</button> 
+                            </div>
+                        </template>
                     </div>
                 </div>
             </template>
@@ -81,7 +231,7 @@
         </div>
         <div class="relative w-[25%] h-[100%] max-w-[350px] bg-[#3B3B3B] overflow-y-auto overflow-x-hidden">
             <div class="relative w-full h-full p-2 flex flex-col justify-start items-start gap-[10px]">
-                <div class="w-full text-3xl text-[#E5EAF3]  flex flex-wrap justify-center items-center">{{modeData[mode-1].font}}</div>
+                <div class="w-full text-3xl text-[#E5EAF3]  flex flex-wrap justify-center items-center">{{modeData[mode-1]?.font}}</div>
                 <template v-if="mode == 1">
                     <div class="relative w-full h-auto flex flex-wrap justify-start items-center overflow-y-auto overflow-x-hidden gap-[10px]">
                         <input ref="backgroundInputEle" v-show="false" class="w-full" @change="onFileChangedBackground($event)" type="file" id="myFile" name="filename">

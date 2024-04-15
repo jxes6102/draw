@@ -100,7 +100,7 @@ const getImgSize = (index) => {
 
             if(image.height>image.width){
                 if(isMobile.value){
-                    countHeight = 350
+                    countHeight = 300
                 }else{
                     countHeight = 600
                 }
@@ -191,7 +191,9 @@ provide('modeDialogStatus', modeDialogStatus)
 //關閉手機模式視窗
 const closeModeDialog = () => {
     modeDialogStatus.value = false
-    console.log('closeModeDialog')
+    if(isMobile.value){
+        mode.value = -1
+    }
 }
 provide('closeModeDialog', closeModeDialog)
 //從背景選單新增圖片
@@ -253,10 +255,19 @@ const addPicture = (index) => {
         let countWidth = 0
 
         if(myImg.height>myImg.width){
-            countHeight = 200
+            if(isMobile.value){
+                countHeight = 100
+            }else{
+                countHeight = 200
+            }
+            
             countWidth = parseInt((countHeight*(myImg.width/myImg.height)).toFixed())
         }else{
-            countWidth = 200
+            if(isMobile.value){
+                countWidth = 100
+            }else{
+                countWidth = 200
+            }
             countHeight = parseInt((countWidth*(myImg.height/myImg.width)).toFixed())
         }
 
