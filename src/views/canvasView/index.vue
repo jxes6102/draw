@@ -2,7 +2,7 @@
     <!-- <div class="w-full h-full flex flex-wrap justify-center items-center text-2xl font-bold" >
         不能用手機
     </div> -->
-    <div class="w-[100vw] h-[100vh] pb-[15vh] flex flex-wrap justify-center items-center">
+    <div class="w-[100vw] h-[100vh] flex flex-wrap justify-center items-center">
         <canvasMenu />
         <div ref="canvasDiv" id="canvasDiv" class="grow w-[65%] h-[100%] pt-10 md:pt-0 bg-[rgb(220,220,220,0.5)] flex flex-wrap justify-center items-start md:items-center">
             <canvas id="canvas"></canvas>
@@ -91,30 +91,32 @@ const getImgSize = (index) => {
         image.src = chose
 
         image.onload = () => {
+            let mobileWidth = (window.innerWidth*0.8).toFixed();
+            let mobileHeight = (window.innerHeight*0.5).toFixed();
 
             if(image.height>image.width){
                 if(isMobile.value){
-                    countHeight = 300
+                    countHeight = mobileHeight
                 }else{
                     countHeight = 600
                 }
                 countWidth = parseInt((countHeight*(image.width/image.height)).toFixed())
 
-                if(isMobile.value && countWidth>280){
-                    countHeight = 250
+                if(isMobile.value && countWidth>mobileWidth){
+                    countHeight = (mobileHeight*0.8).toFixed()
                     countWidth = parseInt((countHeight*(image.width/image.height)).toFixed())
                 }
 
             }else{
                 if(isMobile.value){
-                    countWidth = 280
+                    countWidth = mobileWidth
                 }else{
                     countWidth = 600
                 }
                 countHeight = parseInt((countWidth*(image.height/image.width)).toFixed())
 
-                if(isMobile.value && countHeight>350){
-                    countWidth = 200
+                if(isMobile.value && countHeight>mobileHeight){
+                    countWidth = (mobileWidth*0.8).toFixed()
                     countHeight = parseInt((countWidth*(image.height/image.width)).toFixed())
                 }
             }
