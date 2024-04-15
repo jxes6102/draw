@@ -1,14 +1,8 @@
 <template>
-    <!-- <div v-if="!isMobile" class="w-[100vw] h-[100vh] flex flex-wrap justify-center items-center">
-        <canvasMenu />
-        <div ref="canvasDiv" id="canvasDiv" class="grow w-[65%] h-[100%] bg-[rgb(220,220,220,0.5)] flex flex-wrap justify-center items-center">
-            <canvas id="canvas"></canvas>
-        </div>
-    </div>
-    <div v-else class="w-full h-full flex flex-wrap justify-center items-center text-2xl font-bold" >
+    <div class="w-full h-full flex flex-wrap justify-center items-center text-2xl font-bold" >
         不能用手機
-    </div> -->
-    <div class="w-[100vw] h-[100vh] flex flex-wrap justify-center items-center">
+    </div>
+    <div class="w-[100vw] h-[100vh] pb-[15vh] flex flex-wrap justify-center items-center">
         <canvasMenu />
         <div ref="canvasDiv" id="canvasDiv" class="grow w-[65%] h-[100%] bg-[rgb(220,220,220,0.5)] flex flex-wrap justify-center items-center">
             <canvas id="canvas"></canvas>

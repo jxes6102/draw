@@ -1,6 +1,6 @@
 <template>
     <template v-if="isMobile">
-        <div class="absolute w-full h-[15vh] bottom-0 max-h-[150px] bg-[#222222] flex flex-wrap justify-center items-center">
+        <div class="absolute w-full h-[15vh] bottom-[10vh] max-h-[150px] bg-[#222222] flex flex-wrap justify-center items-center">
             <div
                 v-for="(item, index) in modeData" :key="index"
                 @click="changeMode(index)"
